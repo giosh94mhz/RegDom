@@ -15,15 +15,20 @@ namespace Geekwright\RegDom;
 
 class PublicSuffixList
 {
-    const URL = __DIR__ .'/../data/public_suffix_list.dat';
-    // const URL = 'https://publicsuffix.org/list/public_suffix_list.dat';
+    const URL = 'https://publicsuffix.org/list/public_suffix_list.dat';
 
     protected $tree;
     protected $url;
 
     public function __construct($url = self::URL)
     {
+        $this->setURL($url);
+    }
+
+    public function setURL($url)
+    {
         $this->url = $url;
+        $this->tree = null;
     }
 
     protected function makeTree()

@@ -14,7 +14,7 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PublicSuffixList();
+        $this->object = new PublicSuffixList(__DIR__ .'/../data/public_suffix_list.dat');
     }
 
     /**
