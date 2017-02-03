@@ -26,6 +26,6 @@ Reg-dom was written by Florian Sager, 2009-02-05, sager@agitos.de
 
 Original code was published at http://www.dkim-reputation.org/regdom-lib-downloads/
 
-Marcus Bointon adapted the code here http://github.com/Synchro
+Marcus Bointon's adapted code is here http://github.com/Synchro
 
 ---
