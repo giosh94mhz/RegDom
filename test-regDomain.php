@@ -25,12 +25,12 @@
  */
 
 if (PHP_SAPI != "cli") {
-	exit;
+    exit;
 }
 
 if ($argc < 2) {
-	echo "test-regDomain.php <(fully-qualified-domain-name )+>\n";
-	exit;
+    echo "test-regDomain.php <(fully-qualified-domain-name )+>\n";
+    exit;
 }
 
 require 'effectiveTLDs.inc.php';
@@ -41,11 +41,11 @@ $tldTree = require 'regDomain.inc.php';
 
 for ($i=1; $i<$argc; $i++) {
 
-	$registeredDomain = getRegisteredDomain($argv[$i], $tldTree);
+    $registeredDomain = getRegisteredDomain($argv[$i], $tldTree);
 
-	if (is_null($registeredDomain)) {
-		printf("error: %s\n", $argv[$i]);
-	} else {
-		printf("valid: %s => %s\n", $argv[$i], $registeredDomain);
-	}
+    if (is_null($registeredDomain)) {
+        printf("error: %s\n", $argv[$i]);
+    } else {
+        printf("valid: %s => %s\n", $argv[$i], $registeredDomain);
+    }
 }

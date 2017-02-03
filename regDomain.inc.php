@@ -32,49 +32,51 @@
  * This function returns NULL if $signingDomain is TLD itself
  */
 
-function getRegisteredDomain($signingDomain) {
+function getRegisteredDomain($signingDomain)
+{
+    global $tldTree;
 
-	global $tldTree;
+    $signingDomainParts = explode('.', $signingDomain);
 
-	$signingDomainParts = explode('.', $signingDomain);
+    $result = findRegisteredDomain($signingDomainParts, $tldTree);
 
-	$result = findRegisteredDomain($signingDomainParts, $tldTree);
+    if (empty($result)) {
+        // this is an invalid domain name
+        return null;
+    }
 
-	if (empty($result)) {
-		// this is an invalid domain name
-		return NULL;
-	}
-
-	// assure there is at least 1 TLD in the stripped signing domain
-	if (!strpos($result, '.')) {
-		$cnt = count($signingDomainParts);
-		if ($cnt==1 || $signingDomainParts[$cnt-2]=="") return NULL;
-		return $signingDomainParts[$cnt-2].'.'.$signingDomainParts[$cnt-1];
-	}
-	return $result;
+    // assure there is at least 1 TLD in the stripped signing domain
+    if (!strpos($result, '.')) {
+        $cnt = count($signingDomainParts);
+        if ($cnt==1 || $signingDomainParts[$cnt-2]=="") {
+            return null;
+        }
+        return $signingDomainParts[$cnt-2].'.'.$signingDomainParts[$cnt-1];
+    }
+    return $result;
 }
 
 // recursive helper method
-function findRegisteredDomain($remainingSigningDomainParts, &$treeNode) {
+function findRegisteredDomain($remainingSigningDomainParts, &$treeNode)
+{
+    $sub = array_pop($remainingSigningDomainParts);
 
-	$sub = array_pop($remainingSigningDomainParts);
+    $result = null;
+    if (isset($treeNode['!'])) {
+        return '#';
+    } elseif (is_array($treeNode) && array_key_exists($sub, $treeNode)) {
+        $result = findRegisteredDomain($remainingSigningDomainParts, $treeNode[$sub]);
+    } elseif (is_array($treeNode) && array_key_exists('*', $treeNode)) {
+        $result = findRegisteredDomain($remainingSigningDomainParts, $treeNode['*']);
+    } else {
+        return $sub;
+    }
 
-	$result = NULL;
-	if (isset($treeNode['!'])) {
-		return '#';
-	} else if (is_array($treeNode) && array_key_exists($sub, $treeNode)) {
-		$result = findRegisteredDomain($remainingSigningDomainParts, $treeNode[$sub]);
-	} else if (is_array($treeNode) && array_key_exists('*', $treeNode)) {
-		$result = findRegisteredDomain($remainingSigningDomainParts, $treeNode['*']);
-	} else {
-		return $sub;
-	}
-
-	// this is a hack 'cause PHP interpretes '' as NULL
-	if ($result == '#') {
-		return $sub;
-	} else if (strlen($result)>0) {
-		return $result.'.'.$sub;
-	}
-	return NULL;
+    // this is a hack 'cause PHP interpretes '' as NULL
+    if ($result == '#') {
+        return $sub;
+    } elseif (strlen($result)>0) {
+        return $result.'.'.$sub;
+    }
+    return null;
 }
