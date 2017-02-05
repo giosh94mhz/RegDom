@@ -1,8 +1,7 @@
 filter:
-    excluded_paths: [tests/*, data/*]
+    excluded_paths: [archive/*, tests/*, data/*]
 tools:
-    external_code_coverage:
-        timeout: 900    # Timeout in seconds.
+    external_code_coverage: true
 checks:
     php:
         code_rating: true
@@ -49,7 +48,7 @@ checks:
         comparison_always_same_result: true
         deprecated_code_usage: true
         duplication: true
-        align_assignments: true
+        align_assignments: false
         argument_type_checks: true
         assignment_of_null_return: true
         avoid_aliased_php_functions: true
