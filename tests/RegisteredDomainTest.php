@@ -36,10 +36,20 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
+     *
+     * @dataProvider domainsProvider
      */
-    public function testGetRegisteredDomain()
+    public function testGetRegisteredDomain($url, $regdom)
     {
         $object = new RegisteredDomain();
+        $this->assertEquals($regdom, $object->getRegisteredDomain($url));
+    }
+
+    /**
+     * @return RegisteredDomain
+     */
+    public function domainsProvider()
+    {
         $provider = array(
             array(null, null),
             // Mixed case.
@@ -131,8 +141,6 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
             array('shishi.xn--fiqs8s', 'shishi.中国'),
             array('xn--fiqs8s', null),
         );
-        foreach ($provider as $case) {
-            $this->assertEquals($case[1], $object->getRegisteredDomain($case[0]));
-        }
+        return $provider;
     }
 }

@@ -14,7 +14,7 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PublicSuffixList(__DIR__ .'/../data/public_suffix_list.dat');
+        $this->object = new PublicSuffixList();
     }
 
     /**
@@ -36,6 +36,28 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSet()
     {
+        $tree = $this->object->getTree();
+        $this->assertTrue(is_array($tree));
+        $this->assertArrayHasKey('com', $tree);
+    }
+
+    /**
+     * @covers Geekwright\RegDom\PublicSuffixList::clearDataDirectory
+     */
+    public function testClearDataDirectory()
+    {
+        $this->object->clearDataDirectory();
+        $tree = $this->object->getTree();
+        $this->assertTrue(is_array($tree));
+        $this->assertArrayHasKey('com', $tree);
+    }
+
+    /**
+     * @covers Geekwright\RegDom\PublicSuffixList::clearDataDirectory
+     */
+    public function testClearDataDirectoryCacheOnly()
+    {
+        $this->object->clearDataDirectory('cached_');
         $tree = $this->object->getTree();
         $this->assertTrue(is_array($tree));
         $this->assertArrayHasKey('com', $tree);

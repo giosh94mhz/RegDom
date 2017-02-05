@@ -6,9 +6,12 @@ class RegisteredDomain
     protected $tree;
     protected $psl;
 
-    public function __construct()
+    public function __construct(PublicSuffixList $psl = null)
     {
-        $this->psl = new PublicSuffixList(__DIR__ .'/../data/public_suffix_list.dat');
+        if (null === $psl) {
+            $psl = new PublicSuffixList(__DIR__ . '/../data/public_suffix_list.dat');
+        }
+        $this->psl = $psl;
     }
 
     /**
