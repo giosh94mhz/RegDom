@@ -57,7 +57,7 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
      */
     public function testClearDataDirectoryCacheOnly()
     {
-        $this->object->clearDataDirectory('cached_');
+        $this->object->clearDataDirectory(true);
         $tree = $this->object->getTree();
         $this->assertTrue(is_array($tree));
         $this->assertArrayHasKey('com', $tree);

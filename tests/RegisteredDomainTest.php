@@ -46,7 +46,7 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return RegisteredDomain
+     * @return array
      */
     public function domainsProvider()
     {
@@ -59,8 +59,6 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
             // Leading dot.
             array('.com', null),
             array('.example', null),
-            //array('.example.com', null),
-            //array('.example.example', null),
             // Unlisted TLD.
             array('example', null),
             array('example.example', 'example.example'),
@@ -140,6 +138,9 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
             array('www.xn--85x722f.xn--fiqs8s', '食狮.中国'),
             array('shishi.xn--fiqs8s', 'shishi.中国'),
             array('xn--fiqs8s', null),
+            // inspiration case
+            array('rfu.in.ua', 'rfu.in.ua'),
+            array('in.ua', null),
         );
         return $provider;
     }

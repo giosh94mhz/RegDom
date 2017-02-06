@@ -2,17 +2,20 @@
 namespace Geekwright\RegDom;
 
 /**
- * Based on code by:
- * Florian Sager, 06.08.2008, sager@agitos.de
- * Also, Marcus Bointon's https://github.com/Synchro/regdom-php
+ * Manage the Public Suffix List (PSL) data. This includes, downloading, converting to an array tree
+ * structure for access in PHP, and caching the results.
  *
- * Generate PHP array tree that contains all TLDs from the URL (see below);
+ * @package   Geekwright\RegDom
+ * @author    Florian Sager, 06.08.2008, <sager@agitos.de>
+ * @author    Marcus Bointon (https://github.com/Synchro/regdom-php)
+ * @author    Richard Griffith <richard@geekwright.com>
+ * @license   Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
-
 class PublicSuffixList
 {
     protected $sourceURL = 'https://publicsuffix.org/list/public_suffix_list.dat';
     protected $localPSL = 'public_suffix_list.dat';
+    protected $cachedPrefix = 'cached_';
 
     protected $tree;
     protected $url;
@@ -20,7 +23,7 @@ class PublicSuffixList
 
     /**
      * PublicSuffixList constructor.
-     * @param string|null $url
+     * @param string|null $url URL for the PSL or null to use default
      */
     public function __construct($url = null)
     {
@@ -29,7 +32,10 @@ class PublicSuffixList
     }
 
     /**
-     * @param string $url
+     * Set the URL, and clear any existing tree
+     *
+     * @param string|null $url URL for the PSL or null to use default
+     *
      * @return void
      */
     public function setURL($url)
@@ -38,6 +44,12 @@ class PublicSuffixList
         $this->tree = null;
     }
 
+    /**
+     * Set a fallback (default) for the URL. If we have a locally saved version, prefer it, but use a
+     * remote URL if there is no local source.
+     *
+     * @return void
+     */
     protected function setFallbackURL()
     {
         $this->setLocalPSLName($this->url);
@@ -47,9 +59,11 @@ class PublicSuffixList
     }
 
     /**
-     * make tree
+     * load the PSL tree, automatically handling caches
+     *
+     * return void (results in $this->tree)
      */
-    protected function makeTree()
+    protected function loadTree()
     {
         $this->setFallbackURL();
 
@@ -70,9 +84,16 @@ class PublicSuffixList
         $this->cachePSL($this->url);
     }
 
-    protected function parsePSL($list)
+    /**
+     * Parse the PSL data
+     *
+     * @param string $fileData the PSL data
+     *
+     * return void (results in $this->tree)
+     */
+    protected function parsePSL($fileData)
     {
-        $lines = explode("\n", $list);
+        $lines = explode("\n", $fileData);
 
         foreach ($lines as $line) {
             if ($this->startsWith($line, "//") || $line == '') {
@@ -86,14 +107,23 @@ class PublicSuffixList
         }
     }
 
-    /*
+    /**
      * Does $search start with $startString?
+     *
+     * @param string $search      the string to test
+     * @param string $startString the starting string to match
+     *
+     * @return bool
      */
     protected function startsWith($search, $startString)
     {
         return (substr($search, 0, strlen($startString)) == $startString);
     }
 
+    /**
+     * @param array $node tree array by reference
+     * @param $tldParts
+     */
     protected function buildSubDomain(&$node, $tldParts)
     {
         $dom = trim(array_pop($tldParts));
@@ -117,15 +147,23 @@ class PublicSuffixList
         }
     }
 
+    /**
+     * Return the current tree, loading it if needed
+     *
+     * @return array the PSL tree
+     */
     public function getTree()
     {
         if (null===$this->tree) {
-            $this->makeTree();
+            $this->loadTree();
         }
         return $this->tree;
     }
 
     /**
+     * Read PSL from the URL or file specified in $this->url.
+     * If we process a remote URL, save a local copy.
+     *
      * @return bool|string PSL file contents or false on error
      */
     protected function readPSL()
@@ -168,7 +206,7 @@ class PublicSuffixList
      */
     protected function getCacheFileName($url)
     {
-        return $this->dataDir . 'cached_' . md5($url);
+        return $this->dataDir . $this->cachedPrefix . md5($url);
     }
 
     /**
@@ -212,6 +250,12 @@ class PublicSuffixList
         return file_put_contents($this->localPSL, $fileContents);
     }
 
+    /**
+     * Set localPSL name based on URL
+     *
+     * @param null|string $url the URL for the PSL
+     * @return void (sets $this->localPSL)
+     */
     protected function setLocalPSLName($url)
     {
         if (null === $url) {
@@ -225,17 +269,19 @@ class PublicSuffixList
     /**
      * Delete files in the data directory
      *
-     * @param string $prefix limit clearing to file names starting with this prefix, null for all files
+     * @param bool $cacheOnly true to limit clearing to cached serialized PSLs, false to clear all
      *
      * @return void
      */
-    public function clearDataDirectory($prefix = null)
+    public function clearDataDirectory($cacheOnly = false)
     {
         $dir = $this->dataDir;
         if (is_dir($dir)) {
             if ($dirHandle = opendir($dir)) {
                 while (($file = readdir($dirHandle)) !== false) {
-                    if (filetype($dir . $file) === 'file' && (null===$prefix || $this->startsWith($file, $prefix))) {
+                    if (filetype($dir . $file) === 'file'
+                        && (false === $cacheOnly || $this->startsWith($file, $this->cachedPrefix)))
+                    {
                         unlink($dir . $file);
                     }
                 }
