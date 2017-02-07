@@ -35,6 +35,7 @@ class RegisteredDomain
      * and converting to lower case
      *
      * @param string $url URL or host name
+     *
      * @return string
      */
     protected function normalizeHost($url)
@@ -52,7 +53,7 @@ class RegisteredDomain
     /**
      * Determine the registered domain portion of the supplied host string
      *
-     * @param string $host
+     * @param string $host a host name or URL containing a host name
      *
      * @return string|null shortest registrable domain portion of the supplied host or null if invalid
      */

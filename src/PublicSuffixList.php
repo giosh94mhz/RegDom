@@ -61,7 +61,9 @@ class PublicSuffixList
     /**
      * load the PSL tree, automatically handling caches
      *
-     * return void (results in $this->tree)
+     * @return void (results in $this->tree)
+     *
+     * @throws \RuntimeException
      */
     protected function loadTree()
     {
@@ -89,7 +91,7 @@ class PublicSuffixList
      *
      * @param string $fileData the PSL data
      *
-     * return void (results in $this->tree)
+     * @return void (results in $this->tree)
      */
     protected function parsePSL($fileData)
     {
@@ -121,8 +123,12 @@ class PublicSuffixList
     }
 
     /**
-     * @param array $node tree array by reference
-     * @param $tldParts
+     * Add domains to tree
+     *
+     * @param array    $node     tree array by reference
+     * @param string[] $tldParts array of domain parts
+     *
+     * @return void - changes made to $node by reference
      */
     protected function buildSubDomain(&$node, $tldParts)
     {
@@ -254,6 +260,7 @@ class PublicSuffixList
      * Set localPSL name based on URL
      *
      * @param null|string $url the URL for the PSL
+     *
      * @return void (sets $this->localPSL)
      */
     protected function setLocalPSLName($url)

@@ -4,7 +4,7 @@
 /*
  * This file is part of https://github.com/geekwright/RegDom
  *
- * Clear all Public Sufix Data and load a fresh copy from publicsuffix.org
+ * Clear all Public Suffix Data and load a fresh copy from publicsuffix.org
  */
 
 function includeIfExists($file)
@@ -14,7 +14,9 @@ function includeIfExists($file)
     }
 }
 
-if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader = includeIfExists(__DIR__.'/../../autoload.php'))) {
+if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php'))
+    && (!$loader = includeIfExists(__DIR__.'/../../../autoload.php')))
+{
     die("You must set up the project dependencies, run composer install\n");
 }
 
