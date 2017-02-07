@@ -19,7 +19,7 @@ class PublicSuffixList
 
     protected $tree;
     protected $url;
-    protected $dataDir;
+    protected $dataDir = '/../data/'; // relative to __DIR__
 
     /**
      * PublicSuffixList constructor.
@@ -28,7 +28,6 @@ class PublicSuffixList
     public function __construct($url = null)
     {
         $this->setURL($url);
-        $this->dataDir = realpath(__DIR__ . '/../data/') . '/';
     }
 
     /**
@@ -54,7 +53,7 @@ class PublicSuffixList
     {
         $this->setLocalPSLName($this->url);
         if (null === $this->url) {
-            $this->url = file_exists($this->localPSL) ? $this->localPSL : $this->sourceURL;
+            $this->url = file_exists(__DIR__ . $this->localPSL) ? $this->localPSL : $this->sourceURL;
         }
     }
 
@@ -177,7 +176,7 @@ class PublicSuffixList
         $parts = parse_url($this->url);
         $remote = isset($parts['scheme']) || isset($parts['host']);
         // try to read with file_get_contents
-        $newPSL = file_get_contents($this->url);
+        $newPSL = file_get_contents(($remote ? '' : __DIR__) . $this->url);
         if (false !== $newPSL) {
             if ($remote) {
                 $this->saveLocalPSL($newPSL);
@@ -212,7 +211,7 @@ class PublicSuffixList
      */
     protected function getCacheFileName($url)
     {
-        return $this->dataDir . $this->cachedPrefix . md5($url);
+        return __DIR__ . $this->dataDir . $this->cachedPrefix . md5($url);
     }
 
     /**
@@ -253,7 +252,7 @@ class PublicSuffixList
      */
     protected function saveLocalPSL($fileContents)
     {
-        return file_put_contents($this->localPSL, $fileContents);
+        return file_put_contents(__DIR__ . $this->localPSL, $fileContents);
     }
 
     /**

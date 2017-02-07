@@ -65,7 +65,15 @@ Outputs:
 This script can be used to load a fresh copy of the PSL. It may be useful
 in cron job, or other scripted updates.
 
-# License
+# Credits
+
+Reg-dom was written by Florian Sager, 2009-02-05, sager@agitos.de
+
+Original code was published at http://www.dkim-reputation.org/regdom-lib-downloads/
+
+Marcus Bointon's adapted code is here http://github.com/Synchro
+
+# Original License
 
     # Licensed to the Apache Software Foundation (ASF) under one or more
     # contributor license agreements.  See the NOTICE file distributed with
@@ -82,10 +90,3 @@ in cron job, or other scripted updates.
     # See the License for the specific language governing permissions and
     # limitations under the License.
 
-# Credits
-
-Reg-dom was written by Florian Sager, 2009-02-05, sager@agitos.de
-
-Original code was published at http://www.dkim-reputation.org/regdom-lib-downloads/
-
-Marcus Bointon's adapted code is here http://github.com/Synchro
