@@ -1,6 +1,18 @@
 <?php
 namespace Geekwright\RegDom;
 
+/**
+ * Class TestProtectedDecodePunycode used to test protected decodePunycode() method that is
+ * only used if intl extension is not loaded.
+ */
+class TestProtectedDecodePunycode extends RegisteredDomain
+{
+    public function doDecodePunycode($string)
+    {
+        return $this->decodePunycode($string);
+    }
+}
+
 class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -141,6 +153,34 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
             // inspiration case
             array('rfu.in.ua', 'rfu.in.ua'),
             array('in.ua', null),
+        );
+        return $provider;
+    }
+
+    /**
+     * @covers Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
+     *
+     * @dataProvider punycodeProvider
+     */
+    public function testDecodePunycode($punycode, $decoded)
+    {
+        $object = new TestProtectedDecodePunycode();
+        $this->assertEquals($decoded, $object->doDecodePunycode($punycode));
+    }
+
+    /**
+     * @return array
+     */
+    public function punycodeProvider()
+    {
+        $provider = array(
+            array(null, null),
+            // Mixed case.
+            array('test', 'test'),
+            // punycoded
+            array('xn--85x722f', '食狮'),
+            array('xn--55qx5d', '公司'),
+            array('xn--fiqs8s', '中国'),
         );
         return $provider;
     }
