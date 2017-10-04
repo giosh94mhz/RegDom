@@ -31,8 +31,8 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Geekwright\RegDom\PublicSuffixList::__construct
-     * @covers Geekwright\RegDom\PublicSuffixList::getTree
+     * @covers \Geekwright\RegDom\PublicSuffixList::__construct
+     * @covers \Geekwright\RegDom\PublicSuffixList::getTree
      */
     public function testGetSet()
     {
@@ -42,7 +42,7 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Geekwright\RegDom\PublicSuffixList::clearDataDirectory
+     * @covers \Geekwright\RegDom\PublicSuffixList::clearDataDirectory
      */
     public function testClearDataDirectory()
     {
@@ -53,7 +53,7 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Geekwright\RegDom\PublicSuffixList::clearDataDirectory
+     * @covers \Geekwright\RegDom\PublicSuffixList::clearDataDirectory
      */
     public function testClearDataDirectoryCacheOnly()
     {

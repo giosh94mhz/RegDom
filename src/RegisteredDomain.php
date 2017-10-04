@@ -65,9 +65,8 @@ class RegisteredDomain
                     return idn_to_utf8($part, 0, INTL_IDNA_VARIANT_UTS46);
                 }
                 return idn_to_utf8($part);
-            } else {
-                return $this->decodePunycode($part);
             }
+            return $this->decodePunycode($part);
         }
         return $part;
     }

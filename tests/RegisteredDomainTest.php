@@ -38,7 +38,7 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Geekwright\RegDom\RegisteredDomain::__construct
+     * @covers \Geekwright\RegDom\RegisteredDomain::__construct
      */
     public function testContracts()
     {
@@ -47,7 +47,7 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
+     * @covers \Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
      *
      * @dataProvider domainsProvider
      */
@@ -158,7 +158,7 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
+     * @covers \Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
      *
      * @dataProvider punycodeProvider
      */
