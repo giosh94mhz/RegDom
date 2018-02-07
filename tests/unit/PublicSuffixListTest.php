@@ -30,10 +30,6 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Geekwright\RegDom\PublicSuffixList', $this->object);
     }
 
-    /**
-     * @covers \Geekwright\RegDom\PublicSuffixList::__construct
-     * @covers \Geekwright\RegDom\PublicSuffixList::getTree
-     */
     public function testGetSet()
     {
         $tree = $this->object->getTree();
@@ -41,9 +37,6 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('com', $tree);
     }
 
-    /**
-     * @covers \Geekwright\RegDom\PublicSuffixList::clearDataDirectory
-     */
     public function testClearDataDirectory()
     {
         $this->object->clearDataDirectory();
@@ -52,9 +45,6 @@ class PublicSuffixListTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('com', $tree);
     }
 
-    /**
-     * @covers \Geekwright\RegDom\PublicSuffixList::clearDataDirectory
-     */
     public function testClearDataDirectoryCacheOnly()
     {
         $this->object->clearDataDirectory(true);

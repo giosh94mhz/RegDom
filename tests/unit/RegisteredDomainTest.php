@@ -37,9 +37,6 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    /**
-     * @covers \Geekwright\RegDom\RegisteredDomain::__construct
-     */
     public function testContracts()
     {
         $object = new RegisteredDomain();
@@ -47,8 +44,6 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
-     *
      * @dataProvider domainsProvider
      */
     public function testGetRegisteredDomain($url, $regdom)
@@ -158,8 +153,6 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Geekwright\RegDom\RegisteredDomain::getRegisteredDomain
-     *
      * @dataProvider punycodeProvider
      */
     public function testDecodePunycode($punycode, $decoded)
