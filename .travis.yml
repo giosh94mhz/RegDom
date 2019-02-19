@@ -7,7 +7,16 @@ php:
   - 7.0
   - 7.1
   - 7.2
-  - nightly
+  - 7.3
+  - 7.4snapshot
+
+matrix:
+  include:
+    - php: 5.3
+      dist: precise
+  allow_failures:
+    - php: nightly
+    - php: 7.4snapshot
 
 install:
   - composer install
@@ -16,12 +25,5 @@ script:
   - vendor/bin/phpunit
 
 after_script:
-  - if [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
-
-matrix:
-  include:
-    - php: 5.3
-      dist: precise
-  allow_failures:
-    - php: nightly
+  - if [ "$TRAVIS_PHP_VERSION" != "7.4snapshot" ] && [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "7.4snapshot" ] && [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
