@@ -108,6 +108,9 @@ class RegisteredDomainTest extends \PHPUnit_Framework_TestCase
             array('a.b.c.kobe.jp', 'b.c.kobe.jp'),
             array('city.kobe.jp', 'city.kobe.jp'),
             array('www.city.kobe.jp', 'city.kobe.jp'),
+            array('inbound-smtp.eu-west-1.amazonaws.com', 'eu-west-1.amazonaws.com'),
+            array('s3.dualstack.eu-west-1.amazonaws.com', null),
+            array('www.s3.dualstack.eu-west-1.amazonaws.com', 'www.s3.dualstack.eu-west-1.amazonaws.com'),
             // TLD with a wildcard rule and exceptions.
             array('ck', null),
             array('test.ck', null),
