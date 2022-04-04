@@ -1,3 +1,9 @@
+# downloaded data
+/data/cached_*
+
+# this is a library
+composer.lock
+
 # no backup files, editor temp
 *~
 \#*
