@@ -173,8 +173,7 @@ class RegisteredDomain
         $signingDomainParts = explode('.', $signingDomain);
 
         $result = $this->findRegisteredDomain($signingDomainParts, $this->tree);
-
-        if (empty($result)) {
+        if ('!' === $result || empty($result)) {
             // this is an invalid domain name
             return null;
         }
@@ -204,20 +203,26 @@ class RegisteredDomain
 
         $result = null;
         if (isset($treeNode['!'])) {
-            return '';
-        } elseif (is_array($treeNode) && array_key_exists($sub, $treeNode)) {
+            return '!';
+        }
+
+        if (is_array($treeNode) && array_key_exists($sub, $treeNode)) {
             $result = $this->findRegisteredDomain($remainingSigningDomainParts, $treeNode[$sub]);
         } elseif (is_array($treeNode) && array_key_exists('*', $treeNode)) {
             $result = $this->findRegisteredDomain($remainingSigningDomainParts, $treeNode['*']);
-        } else {
-            return $sub;
         }
 
-        if ($result === '') {
-            return $sub;
-        } elseif (strlen($result)>0) {
-            return $result . '.' . $sub;
+        if ('!' === $result) {
+            return $result;
         }
-        return null;
+
+        if (null === $result) {
+            if (isset($treeNode['.'])) {
+                return '';
+            }
+            return null;
+        }
+
+        return !empty($result) ? $result . '.' . $sub : $sub;
     }
 }

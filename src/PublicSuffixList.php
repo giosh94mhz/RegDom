@@ -146,8 +146,12 @@ class PublicSuffixList
             }
         }
 
-        if (!$isNotDomain && count($tldParts) > 0) {
-            $this->buildSubDomain($node[$dom], $tldParts);
+        if (!$isNotDomain) {
+            if (empty($tldParts)) {
+                $node[$dom]['.'] = "";
+            } else {
+                $this->buildSubDomain($node[$dom], $tldParts);
+            }
         }
     }
 
